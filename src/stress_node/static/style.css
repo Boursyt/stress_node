@@ -1,0 +1,476 @@
+/* stress — stylesheet
+   Design tokens and chrome reused from theoboursy_fr (common/assets/styles.css).
+   Light by default, dark via :root[data-theme="dark"]. */
+
+/* ---------- fonts (variable, self-hosted) ---------- */
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("fonts/inter.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("fonts/jetbrains-mono.woff2") format("woff2");
+}
+
+/* ---------- design tokens ---------- */
+:root {
+  color-scheme: light;
+  --bg: #ffffff;
+  --card: #ffffff;
+  --surface: #eefaff;
+  --ink: #17212b;
+  --heading: #101820;
+  --muted: #526575;
+  --faint: #8a9aa4;
+  --go: #00add8;
+  --go-dark: #007d9c;
+  --accent-text: #007d9c;
+  --line: #c9e9f2;
+  --line-strong: #c6d8e0;
+  --soft: #eaf8fd;
+  --good: #1a8c5a;
+  --warn: #c76a00;
+  --bad: #c2185b;
+  --topbar-bg: rgba(255, 255, 255, 0.82);
+  --shadow-sm: 0 8px 22px rgba(0, 91, 116, 0.08);
+  --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, "Liberation Mono", monospace;
+  --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0b1016;
+  --card: #121b24;
+  --surface: #0f1720;
+  --ink: #c7d3dc;
+  --heading: #eaf2f7;
+  --muted: #8ea0ac;
+  --faint: #5b6c78;
+  --go: #12c2ef;
+  --go-dark: #0b4d5f;
+  --accent-text: #4fd3f4;
+  --line: #223543;
+  --line-strong: #2c4150;
+  --soft: #10222b;
+  --good: #3ecb8b;
+  --warn: #ffa94d;
+  --bad: #ff77a0;
+  --topbar-bg: rgba(11, 16, 22, 0.82);
+  --shadow-sm: 0 8px 22px rgba(0, 0, 0, 0.4);
+}
+
+/* ---------- base ---------- */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  padding-bottom: 40px;
+  background:
+    linear-gradient(180deg, rgba(0, 173, 216, 0.18), rgba(0, 173, 216, 0.05) 320px, transparent 560px),
+    var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0 0 12px;
+  color: var(--heading);
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: 1.6rem;
+}
+
+a {
+  color: var(--accent-text);
+}
+
+main {
+  width: min(960px, calc(100% - 32px));
+  margin: 28px auto 0;
+}
+
+.mono {
+  font-family: var(--mono);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+/* ---------- top bar ---------- */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  border-bottom: 1px solid var(--line);
+  background: var(--topbar-bg);
+  backdrop-filter: blur(10px);
+}
+
+.topbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: min(960px, calc(100% - 32px));
+  height: 52px;
+  margin: 0 auto;
+}
+
+.brand {
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 0.92rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.brand .prompt {
+  color: var(--accent-text);
+}
+
+.topnav {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  font-family: var(--mono);
+  font-size: 0.86rem;
+}
+
+.topnav a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.topnav a::before {
+  content: "/";
+  margin-right: 2px;
+  color: var(--faint);
+}
+
+.topnav a:hover,
+.topnav a[aria-current="page"] {
+  color: var(--accent-text);
+}
+
+/* ---------- theme toggle ---------- */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--card);
+  color: var(--accent-text);
+  font-size: 0.92rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: border-color 0.12s ease, color 0.12s ease;
+}
+
+.theme-toggle:hover {
+  border-color: var(--go);
+  color: var(--go);
+}
+
+.theme-toggle .icon-light {
+  display: none;
+}
+
+:root[data-theme="dark"] .theme-toggle .icon-dark {
+  display: none;
+}
+
+:root[data-theme="dark"] .theme-toggle .icon-light {
+  display: inline;
+}
+
+/* ---------- buttons and inputs ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 16px;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background: var(--card);
+  color: var(--ink);
+  font: 600 0.88rem var(--sans);
+  cursor: pointer;
+  transition: border-color 0.12s ease, background 0.12s ease, color 0.12s ease;
+}
+
+.btn:hover {
+  border-color: var(--go);
+  color: var(--accent-text);
+}
+
+.btn-primary {
+  border-color: var(--go);
+  background: var(--go);
+  color: #04222b;
+}
+
+.btn-primary:hover {
+  background: var(--go);
+  color: #04222b;
+  filter: brightness(1.06);
+}
+
+.btn-danger {
+  border-color: var(--bad);
+  color: var(--bad);
+}
+
+.btn-danger:hover {
+  background: var(--bad);
+  color: #ffffff;
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+input[type="number"],
+input[type="text"] {
+  height: 36px;
+  padding: 0 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background: var(--card);
+  color: var(--ink);
+  font: 500 0.9rem var(--mono);
+}
+
+input[type="number"]:focus,
+input[type="text"]:focus {
+  outline: 2px solid var(--go);
+  outline-offset: 1px;
+}
+
+input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--go);
+}
+
+/* ---------- toolbar (duration + start / stop) ---------- */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--card);
+}
+
+.toolbar label {
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+.toolbar .spacer {
+  flex: 1;
+}
+
+/* ---------- node list ----------
+   <ul class="node-list">
+     <li class="node-row">
+       <input type="checkbox">
+       <span class="node-name">labrys <span class="badge">amd64</span></span>
+       <span class="metric"><span class="metric-label">CPU</span>
+         <span class="bar"><span style="width: 42%"></span></span>
+         <span class="metric-value">42%</span></span>
+       ... RAM ...
+       <span class="temp" data-level="ok">54 °C</span>
+       <span class="status" data-state="idle">idle</span>
+     </li>
+   </ul> */
+.node-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--card);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.node-row {
+  display: grid;
+  grid-template-columns: 24px minmax(130px, 1.3fr) minmax(120px, 1fr) minmax(120px, 1fr) 70px 90px;
+  align-items: center;
+  gap: 14px;
+  padding: 11px 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.node-row:last-child {
+  border-bottom: 0;
+}
+
+.node-row:hover {
+  background: var(--soft);
+}
+
+.node-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--heading);
+  font-weight: 600;
+}
+
+.badge {
+  padding: 1px 7px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  color: var(--muted);
+  font: 500 0.7rem var(--mono);
+}
+
+.metric {
+  display: grid;
+  grid-template-columns: 34px 1fr 44px;
+  align-items: center;
+  gap: 8px;
+}
+
+.metric-label {
+  color: var(--faint);
+  font: 500 0.72rem var(--mono);
+  text-transform: uppercase;
+}
+
+.metric-value {
+  text-align: right;
+  font: 500 0.82rem var(--mono);
+}
+
+.bar {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.bar > span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--go);
+  transition: width 0.4s ease;
+}
+
+/* temperature: ok < 65, warn 65-75, hot >= 75 (levels set by the server) */
+.temp {
+  text-align: right;
+  font: 600 0.88rem var(--mono);
+}
+
+.temp[data-level="ok"] {
+  color: var(--good);
+}
+
+.temp[data-level="warn"] {
+  color: var(--warn);
+}
+
+.temp[data-level="hot"] {
+  color: var(--bad);
+}
+
+.status {
+  justify-self: end;
+  color: var(--faint);
+  font: 500 0.78rem var(--mono);
+}
+
+.status[data-state="running"] {
+  color: var(--accent-text);
+}
+
+.status[data-state="down"] {
+  color: var(--bad);
+}
+
+/* ---------- table (history) ---------- */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--card);
+}
+
+.table th,
+.table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  font-size: 0.88rem;
+}
+
+.table th {
+  color: var(--muted);
+  font: 500 0.75rem var(--mono);
+  text-transform: uppercase;
+}
+
+.table tr:last-child td {
+  border-bottom: 0;
+}
+
+/* ---------- chart container (uPlot, step 11) ---------- */
+.chart {
+  min-height: 280px;
+  margin: 16px 0;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--card);
+}
+
+/* ---------- small screens ---------- */
+@media (max-width: 720px) {
+  .node-row {
+    grid-template-columns: 24px 1fr 70px;
+    row-gap: 8px;
+  }
+
+  .node-row .metric {
+    grid-column: 2 / 4;
+  }
+
+  .status {
+    justify-self: start;
+  }
+}
